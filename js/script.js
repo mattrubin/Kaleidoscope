@@ -73,11 +73,11 @@ function draw() {
 
     canvas.context.globalCompositeOperation = "lighter";
 
-	//playhead.draw(canvas.context);
 	for(var i=0; i<balls.length; i++){
 		balls[i].draw(canvas.context);
 		window.status = "Draw "+i;
 	}
+	//playhead.draw(canvas.context);
 }
 
 $(canvas).click(function(event) {

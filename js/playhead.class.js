@@ -1,6 +1,6 @@
 function Playhead(){
 	this.x = 0;
-	this.dx = 100;
+	this.dx = 300;
 }
 
 Playhead.prototype.advance = function(timeDelta){

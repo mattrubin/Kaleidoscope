@@ -1,11 +1,11 @@
 function Ball(){
 	this.x = 0;
 	this.y = 0;
-	this.dx = Math.random()*4-2;
-	this.dy = Math.random()*4-2;
+	this.dx = Math.random()*6-3;
+	this.dy = Math.random()*6-3;
 	
-	this.radius = 50;
-	this.dradius = -Math.random()*.3+.3;
+	this.radius = 100;
+	this.dradius = Math.random()-.5;
 	this.bump = 1;
 	this.dbump = -.05;
 	
@@ -48,8 +48,8 @@ Ball.prototype.advance = function(timeDelta){
 		this.radius == 10;
 		this.dradius *=-1;
 	}
-	if(this.radius>50){
-		this.radius == 50;
+	if(this.radius>200){
+		this.radius == 200;
 		this.dradius *=-1;
 	}
 	
@@ -75,17 +75,23 @@ Ball.prototype.play = function(){
 
 		wave.Make();
 		this.audio.src = wave.dataURI;
-		this.audio.volume = this.radius/50;
+		this.audio.volume = this.radius/200;
 		if(this.audio.volume<0) this.audio.volume==0;
 	this.audio.play();
 	this.bump = 1.2;
 	this.dbump = .05;
+	$(canvas).drawArc({
+		fillStyle: "rgba(255,255,255,.1)",
+		x: this.x, y: this.y,
+		radius: this.radius
+	})
+	
 }
 
 Ball.prototype.draw = function(context){
 	$(canvas).drawArc({
 		fillStyle: this.color,
 		x: this.x, y: this.y,
-		radius: this.radius*this.bump
+		radius: this.radius//*this.bump
 	})
 }
