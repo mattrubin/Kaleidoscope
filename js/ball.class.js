@@ -88,7 +88,7 @@ Ball.prototype.play = function(){
 	
 }
 
-Ball.prototype.draw = function(context){
+Ball.prototype.draw = function(){
 	$(canvas).drawArc({
 		fillStyle: this.color,
 		x: this.x, y: this.y,

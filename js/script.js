@@ -3,28 +3,23 @@
 */
 
 var canvas = document.getElementById("canvas");
-var balls = [];
+var context = canvas.getContext("2d");
 var playhead = new Playhead();
+var balls = [];
+
 
 function resizeToWindow() {
 	canvas.setAttribute("width", $(window).width());
 	canvas.setAttribute("height", $(window).height());
-    canvas.context.fillStyle = 'rgb(0,0,0)';
-    canvas.context.fillRect( 0, 0, canvas.width, canvas.height );
+	// Canvas is reset by the resize, so don't worry about the composite mode
+    context.fillStyle = 'rgb(0,0,0)';
+    context.fillRect( 0, 0, canvas.width, canvas.height );
 };
 
 
 $(window).resize(function(){
 	waitForFinalEvent(function(){
-		//var dataurl = canvas.toDataURL();
-
 		resizeToWindow()
-		
-		//var img  = new Image();
-		//img.src = dataurl;
-		//img.onload= function(){
-		//	canvas.context.drawImage(img, 0, 0);
-		//}
 	}, 500, "resize");
 });
 
@@ -37,10 +32,9 @@ $(document).ready(function(){
 
 
 function init() {
-	document.documentElement.style.overflow = 'hidden';	 // firefox, chrome
+	document.documentElement.style.overflow = 'hidden';	 // firefox, chrome, safari, etc.
 	document.body.scroll = "no";	// ie only
 	
-	extendCanvas(canvas);
 	resizeToWindow();
 }
 
@@ -52,6 +46,7 @@ function animate(time) {
 }
 
 var prevTime = 0;
+var oldPlayX = 0;
 function advance() {
     var time = new Date().getTime() * 0.002;
 	var timeDelta = 0;
@@ -59,60 +54,31 @@ function advance() {
 		timeDelta = time-prevTime;
 	}
 	prevTime = time;
-
+	
+	oldPlayX = playhead.x;
 	playhead.advance(timeDelta);
 	for(var i=0; i<balls.length; i++){
 		balls[i].advance(timeDelta);
-		if(playhead.x>=balls[i].x && playhead.x-playhead.dx*timeDelta<balls[i].x) balls[i].play();
+		if(playhead.x>=balls[i].x && oldPlayX<balls[i].x) balls[i].play();
 	}
 }
+
 function draw() {
-    canvas.context.globalCompositeOperation = "source-over";
-    canvas.context.fillStyle = 'rgba(0,0,0,0.03)';
-    canvas.context.fillRect( 0, 0, canvas.width, canvas.height );
+    context.globalCompositeOperation = "source-over";
+    context.fillStyle = 'rgba(0,0,0,0.03)';
+    context.fillRect( 0, 0, canvas.width, canvas.height );
 
-    canvas.context.globalCompositeOperation = "lighter";
-
+    context.globalCompositeOperation = "lighter";
 	for(var i=0; i<balls.length; i++){
-		balls[i].draw(canvas.context);
+		balls[i].draw(context);
 		window.status = "Draw "+i;
 	}
-	//playhead.draw(canvas.context);
+	//playhead.draw(context);
 }
 
 $(canvas).click(function(event) {
-	
-	var xx = event.pageX - $(event.target).offset().left;
-	var yy = event.pageY - $(event.target).offset().top;
-	
 	var ball = new Ball();
-	ball.x = xx;
-	ball.y = yy;
-	//alert(ball.color);
+	ball.x = event.pageX - $(event.target).offset().left;
+	ball.y = event.pageY - $(event.target).offset().top;
 	balls[balls.length] = ball;
-/*	
-	$(canvas).drawArc({
-		fillStyle: '#729fcf',
-		x: xx, y: yy,
-		radius: 50
-	})
-	*/
-	
-/*	var audio = new Audio(); // create the HTML5 audio element
-	var wave = new RIFFWAVE(); // create an empty wave file
-	wave.header.sampleRate = 44100;
-	
-    var tempo = 120;
-
-addNote(wave, Note.C4*Math.pow(2, 2*(canvas.height-yy)/canvas.height-1), Duration.eighth, tempo);
-//addNote(wave, Note.A3, Duration.eighth, tempo);
-//addNote(wave, Note.A3, Duration.sixteenth, tempo);
-//addNote(wave, Note.A3, Duration.sixteenth, tempo);
-
-
-	wave.Make();
-	ball.audio.src = wave.dataURI;
-*/
-	balls[balls.length] = ball;
-
 });

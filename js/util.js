@@ -14,15 +14,6 @@ var waitForFinalEvent = (function () {
 })();
 
 
-
-
-function extendCanvas(canvas){
-	canvas.dirty = false;
-	canvas.context = canvas.getContext("2d");
-}
-
-
-
 // requestAnim shim layer by Paul Irish
     window.requestAnimFrame = (function(){
       return  window.requestAnimationFrame       || 
