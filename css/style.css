@@ -167,7 +167,15 @@ a:hover { color: #036; }
  *
  * Author: 
  */
-
+body {
+	background:black;
+}
+canvas {
+	background:white;
+	margin:0px;
+	padding:0px;
+	position:absolute;
+}
 
 
 

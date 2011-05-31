@@ -3,13 +3,11 @@
 
 
 /* TEAM */
-  <your title>: <your name>
-  Site: 
-  Twitter: 
-  Location: 
+  Creator: Matt Rubin
+  Site: http://mattrubin.me
 
 /* THANKS */
-  Names (& URL): 
+  Names (& URL): Paul Irish and the HTML5 Boilerplate team
 
 /* SITE */
   Standards: HTML5, CSS3
